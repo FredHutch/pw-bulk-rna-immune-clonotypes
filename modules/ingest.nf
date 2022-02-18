@@ -13,6 +13,21 @@ process make_paired_bam {
     template "make_paired_bam.sh"
 }
 
+// Construct an unaligned BAM file from a single FASTQ file
+process make_single_bam {
+    container "${params.container__picard}"
+    label "io_limited"
+
+    input:
+    tuple val(specimen), path(R1)
+
+    output:
+    tuple val(specimen), path("${specimen}.bam")
+
+    script:
+    template "make_single_bam.sh"
+}
+
 
 def validate_input_params(){
     param_count = 0
