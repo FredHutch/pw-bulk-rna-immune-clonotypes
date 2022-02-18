@@ -1,34 +1,3 @@
-// Construct an unaligned BAM file from a pair of FASTQ files
-process make_paired_bam {
-    container "${params.container__picard}"
-    label "io_limited"
-
-    input:
-    tuple val(specimen), path(R1), path(R2)
-
-    output:
-    tuple val(specimen), path("${specimen}.bam")
-
-    script:
-    template "make_paired_bam.sh"
-}
-
-// Construct an unaligned BAM file from a single FASTQ file
-process make_single_bam {
-    container "${params.container__picard}"
-    label "io_limited"
-
-    input:
-    tuple val(specimen), path(R1)
-
-    output:
-    tuple val(specimen), path("${specimen}.bam")
-
-    script:
-    template "make_single_bam.sh"
-}
-
-
 def validate_input_params(){
     param_count = 0
 
@@ -105,15 +74,8 @@ workflow ingest {
             .set { reads_ch }
     }
 
-    if ( params.paired_manifest || params.paired_reads ){
-        make_paired_bam(reads_ch)
-        out_ch = make_paired_bam.out
-    } else {
-        make_single_bam(reads_ch)
-        out_ch = make_single_bam.out
-    }
 
     emit:
-    out_ch
+    reads_ch
 
 }

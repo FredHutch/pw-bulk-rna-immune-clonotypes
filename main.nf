@@ -8,7 +8,7 @@ include { predict } from './modules/predict'
 // Main workflow
 workflow {
 
-    // Get reads from --manifest or --reads
+    // Get reads from --[paired/single]_manifest or --reads
     ingest()
 
     // Predict clonotypes from the imported reads
