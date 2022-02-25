@@ -19,7 +19,7 @@ To define the structure of the input, the user may specify either a filepath
 wildcard (e.g. `path/to/reads/*_R{1,2}*.fastq.gz`) or with a manifest file.
 
 Manifest files must be formatted as a three-column CSV with the headers
-`specimen`, `R1`, and `R2`.
+`sample`, `fastq_1`, and `fastq_2`.
 
 To distinguish between paired- and single-end data, one (and only one) of the
 following parameters must be used:

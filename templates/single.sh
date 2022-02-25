@@ -3,7 +3,7 @@
 set -e
 
 run-trust4 \
-    -u ${R1} \
+    -u ${fastq_1} \
     -f ${ref} \
     -o TRUST4 \
     -t ${task.cpus}

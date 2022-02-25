@@ -44,9 +44,9 @@ workflow ingest {
             .splitCsv(header: true)
             .map {
                 r -> [
-                    r["specimen"], 
-                    file(r["R1"]),
-                    file(r["R2"])
+                    r["sample"], 
+                    file(r["fastq_1"]),
+                    file(r["fastq_2"])
                 ]
             }
             .set { reads_ch }
@@ -68,7 +68,7 @@ workflow ingest {
             .map {
                 r -> [
                     r["specimen"], 
-                    file(r["R1"])
+                    file(r["fastq_1"])
                 ]
             }
             .set { reads_ch }

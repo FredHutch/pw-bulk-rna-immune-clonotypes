@@ -2,10 +2,10 @@
 process paired {
     container "${params.container__trust4}"
     label "mem_medium"
-    publishDir "${params.output_folder}/${specimen}", mode: "copy", overwrite: true
+    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true
 
     input:
-    tuple val(specimen), path(R1), path(R2)
+    tuple val(sample), path(fastq_1), path(fastq_2)
     path ref
 
     output:
@@ -19,10 +19,10 @@ process paired {
 process single {
     container "${params.container__trust4}"
     label "mem_medium"
-    publishDir "${params.output_folder}/${specimen}", mode: "copy", overwrite: true
+    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true
 
     input:
-    tuple val(specimen), path(R1)
+    tuple val(sample), path(fastq_1)
     path ref
 
     output:
