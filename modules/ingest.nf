@@ -116,10 +116,6 @@ workflow ingest {
         .groupTuple()
         .set { output_reads_ch }
 
-    grouped_reads_ch.single.view()
-
-    concat.out.view()
-
     emit:
     output_reads_ch
 
@@ -134,7 +130,7 @@ process concat {
     tuple val(sample_name), val(read_i), path("inputs/")
 
     output:
-    path "${sample_name}_${read_i}.fastq.gz"
+    tuple val(sample_name), val(read_i), path("${sample_name}_${read_i}.fastq.gz")
 
     script:
     template "concat_fastq.sh"
