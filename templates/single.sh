@@ -7,3 +7,5 @@ run-trust4 \
     -f ${ref} \
     -o TRUST4 \
     -t ${task.cpus}
+
+cp TRUST4_report.tsv "${sample}.tsv"

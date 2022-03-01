@@ -2,14 +2,15 @@
 process paired {
     container "${params.container__trust4}"
     label "mem_medium"
-    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true
+    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true, pattern: "TRUST4*"
 
     input:
     tuple val(sample), path(fastq_1), path(fastq_2)
     path ref
 
     output:
-    path "*"
+    path "TRUST4*", emit: all
+    path "${sample}.tsv", emit: tsv
 
     script:
     template "paired.sh"
@@ -19,14 +20,15 @@ process paired {
 process single {
     container "${params.container__trust4}"
     label "mem_medium"
-    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true
+    publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true, pattern: "TRUST4*"
 
     input:
     tuple val(sample), path(fastq_1)
     path ref
 
     output:
-    path "*"
+    path "TRUST4*", emit: all
+    path "${sample}.tsv", emit: tsv
 
     script:
     template "single.sh"
@@ -81,8 +83,13 @@ workflow predict {
 
     if ( params.paired_reads || params.paired_manifest ){
         paired(reads_ch, ref)
+        tsv = paired.out.tsv
     } else {
         single(reads_ch, ref)
+        tsv = single.out.tsv
     }
+
+    emit:
+    tsv = tsv
 
 }
