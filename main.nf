@@ -4,6 +4,7 @@ nextflow.enable.dsl=2
 // Import modules
 include { ingest } from './modules/ingest'
 include { predict } from './modules/predict'
+include { gather } from './modules/gather'
 
 // Main workflow
 workflow {
@@ -13,5 +14,8 @@ workflow {
 
     // Predict clonotypes from the imported reads
     predict(ingest.out)
+
+    // Gather all of the outputs into a single table
+    gather(predict.out)
 
 }
