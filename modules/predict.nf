@@ -5,7 +5,7 @@ process paired {
     publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true, pattern: "TRUST4*"
 
     input:
-    tuple val(sample), path(fastq_1), path(fastq_2)
+    tuple val(sample), path("inputs/READS_?.fastq.gz")
     path ref
 
     output:
@@ -23,7 +23,7 @@ process single {
     publishDir "${params.output_folder}/${sample}", mode: "copy", overwrite: true, pattern: "TRUST4*"
 
     input:
-    tuple val(sample), path(fastq_1)
+    tuple val(sample), path("inputs/READS_?.fastq.gz")
     path ref
 
     output:

@@ -3,7 +3,7 @@
 set -e
 
 run-trust4 \
-    -u ${fastq_1} \
+    -1 inputs/READS_1.fastq.gz \
     -f ${ref} \
     -o TRUST4 \
     -t ${task.cpus}
