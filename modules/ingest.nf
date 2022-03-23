@@ -1,3 +1,18 @@
+// Sanitize the CSV which maps files to samples
+process parse_csv {
+    container "${params.container__pandas}"
+    label "io_limited"
+
+    input:
+    path "input.csv"
+
+    output:
+    path "output.csv"
+
+    script:
+    template "parse_csv.py"
+}
+
 def validate_input_params(){
     param_count = 0
 
@@ -45,9 +60,15 @@ workflow ingest {
     // to match the format of the `fromFilePairs` factory:
     // [val(sample_name), [path(fastq_1), path(fastq_2)]]
     if ( params.paired_manifest ){
-        Channel
-            .from(file(params.paired_manifest))
+
+        // Sanitize the manifest CSV
+        parse_csv(file(params.paired_manifest))
+
+        // Parse the CSV
+        parse_csv
+            .out
             .splitCsv(header: true)
+            .flatten()
             .map {
                 r -> [
                     r["sample"], 
@@ -72,9 +93,15 @@ workflow ingest {
 
     // If the input is specified from single reads in a manifest file
     if ( params.single_manifest ){
-        Channel
-            .from(file(params.single_manifest))
+
+        // Sanitize the manifest CSV
+        parse_csv(file(params.single_manifest))
+
+        // Parse the CSV
+        parse_csv
+            .out
             .splitCsv(header: true)
+            .flatten()
             .map {
                 r -> [
                     r["specimen"], 
